@@ -8,11 +8,11 @@ TenantFlow adalah platform manajemen proyek berbasis website dengan arsitektur m
 *  **Tenant Owner (Admin):**
     *   Dapat mendaftarkan organisasi/perusahaan baru (Tenant).
     *   Mengatur peran (*role*) dan menghapus proyek dalam organisasi/perusahaan miliknya.
-  **Project Manager:**
+*  **Project Manager:**
     *   Membuat, mengedit, dan menghapus proyek di dalam *workspace* tenant.
     *   Menugaskan *tasks* kepada anggota tim.
     *   Memberikan persetujuan (*Acc*) perubahan status task dari *In Progress* menjadi *Done*.
-  **Member (Staff):**
+*  **Member (Staff):**
     *   Melihat daftar proyek dan *tasks* yang ditugaskan kepadanya.
     *   Mengubah status task dari *To Do* ke *In Progress* secara mandiri.
     *   Mengajukan perubahan status task dari *In Progress* ke *Done* (membutuhkan persetujuan PM).
