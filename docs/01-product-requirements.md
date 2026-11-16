@@ -5,8 +5,8 @@
 TenantFlow adalah platform manajemen proyek berbasis website dengan arsitektur multi-tenancy. Sistem ini dirancang untuk memfasilitasi kolaborasi tim dalam sebuah organisasi/perusahaan secara terisolasi, aman, dan terstruktur.
 
 ## 2. Target User & Roles
-  **Tenant Owner (Admin):**
-    *  Dapat mendaftarkan organisasi/perusahaan baru (Tenant).
+*  **Tenant Owner (Admin):**
+    *   Dapat mendaftarkan organisasi/perusahaan baru (Tenant).
     *  Mengatur peran (*role*) dan menghapus proyek dalam organisasi/perusahaan miliknya.
   **Project Manager:**
     *  Membuat, mengedit, dan menghapus proyek di dalam *workspace* tenant.
