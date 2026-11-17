@@ -35,4 +35,49 @@ Basis data **TenantFlow** dirancang menggunakan pendekatan relasional terpusat d
    * **Kolom Utama:** `id` (PK), `project_id` (FK ke `projects.id`), `tenant_id` (FK ke `tenants.id`), `assigned_to` (FK ke `users.id`), `title`, `status` (*todo*, *in_progress*, *done*), dan `created_at`.
 
 #### **Strategi Keamanan Multi-Tenancy (`tenant_id`):**
-Hampir seluruh tabel operasional (`users`, `projects`, dan `tasks`) wajib menyertakan kolom `tenant_id`. Hal ini memastikan bahwa setiap *query* yang dieksekusi oleh backend selalu difilter berdasarkan ID perusahaan yang sedang aktif, sehingga kebocoran data antar-tenant dapat dicegah.
+Seluruh tabel operasional (`users`, `projects`, dan `tasks`) wajib menyertakan kolom `tenant_id`. Hal ini memastikan bahwa setiap *query* yang dieksekusi oleh backend selalu difilter berdasarkan ID perusahaan yang sedang aktif, sehingga kebocoran data antar-tenant dapat dicegah.
+
+
+---
+
+## 3. API Endpoints Mapping
+
+Backend **TenantFlow** menyediakan RESTful API endpoints yang dirancang terstruktur untuk mendukung interaksi dari frontend. Seluruh rute (kecuali publik) dilindungi oleh *Auth Middleware* untuk validasi token **JWT** serta pemeriksaan hak akses berbasis peran (*RBAC*).
+
+### **A. Authentication & User Management**
+Mengelola otentikasi pengguna, penerbitan token sesi, serta registrasi akun awal.
+
+| Method | Endpoint | Description | Access Role |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/v1/auth/register` | Mendaftarkan *Tenant Owner* baru beserta pembuatan *workspace* perusahaan. | Public |
+| `POST` | `/api/v1/auth/login` | Autentikasi kredensial pengguna dan mengembalikan token JWT. | Public |
+| `GET` | `/api/v1/auth/me` | Mengambil profil pengguna yang sedang aktif berdasarkan token sesi. | Authenticated |
+
+### **B. Tenant & Workspace Management**
+Mengelola data perusahaan dan manajemen anggota tim di dalam workspace.
+
+| Method | Endpoint | Description | Access Role |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/v1/tenants` | Mengambil detail informasi *workspace* tenant yang aktif. | Owner / PM / Member |
+| `POST` | `/api/v1/tenants/users` | Menambahkan (*provisioning*) akun baru (PM/Member) ke dalam *tenant*. | Owner / PM |
+| `GET` | `/api/v1/tenants/users` | Menampilkan daftar seluruh anggota tim di dalam *tenant*. | Owner / PM / Member |
+
+### **C. Project Management**
+Mengelola siklus hidup proyek di dalam organisasi.
+
+| Method | Endpoint | Description | Access Role |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/v1/projects` | Menampilkan daftar seluruh proyek dalam satu *tenant*. | Owner / PM / Member |
+| `POST` | `/api/v1/projects` | Membuat proyek baru (*planning*). | Owner / PM |
+| `PUT` | `/api/v1/projects/:id` | Memperbarui detail atau status proyek. | Owner / PM |
+| `DELETE` | `/api/v1/projects/:id` | Menghapus data proyek dari sistem. | Owner |
+
+### **D. Task Management**
+Mengelola rincian tugas operasional di dalam suatu proyek.
+
+| Method | Endpoint | Description | Access Role |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/v1/projects/:projectId/tasks` | Menampilkan daftar tugas dalam proyek tertentu. | Owner / PM / Member |
+| `POST` | `/api/v1/projects/:projectId/tasks` | Membuat tugas baru dan menetapkannya ke anggota tim (*assigned_to*). | Owner / PM |
+| `PUT` | `/api/v1/tasks/:id` | Memperbarui status tugas (*todo* $\rightarrow$ *in_progress* $\rightarrow$ *done*). | Owner / PM / Member |
+| `DELETE` | `/api/v1/tasks/:id` | Menghapus tugas dari proyek. | Owner / PM |
