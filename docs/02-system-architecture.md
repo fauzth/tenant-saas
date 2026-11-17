@@ -103,14 +103,14 @@ Hak akses pengguna di dalam sistem dibagi menjadi tiga hierarki peran utama untu
 
 <img src="./assets/figure_4_UseCase.png" alt="TenantFlow Use Case" width="750px" />
 
-1 **Tenant Owner:** 
-  * Memiliki hak akses penuh (full privileges) terhadap workspace perusahaan.
-  * Dapat mendaftarkan tenant, mem-provisioning akun Project Manager atau Member, serta menghapus proyek.
+1. **Tenant Owner:** 
+   * Memiliki hak akses penuh (full privileges) terhadap workspace perusahaan.
+   * Dapat mendaftarkan tenant, mem-provisioning akun Project Manager atau Member, serta menghapus proyek.
 2. **Project Manager (PM):** 
    * Bertanggung jawab mengelola operasional proyek, perencanaan (*planning*), dan pemantauan *timeline*.
    * Dapat membuat proyek baru dan memperbarui status proyek.
    * Dapat membuat, menetapkan (*assign*), dan mengubah status *task* di dalam proyek.
    * Dapat mengambil bagian dalam eksekusi proyek dengan cara menetapkan task kepada dirinya sendiri atau mengerjakan task yang ada.
-3 **Member:**
-  * Dapat melihat daftar proyek dalam tenant, melihat rincian tugas yang ditugaskan kepadanya, serta memperbarui status tugas (todo $\rightarrow$ in_progress $\rightarrow$ done).
-  * Fokus pada eksekusi tugas harian.
+3. **Member:**
+   * Dapat melihat daftar proyek dalam tenant, melihat rincian tugas yang ditugaskan kepadanya, serta memperbarui status tugas (todo $\rightarrow$ in_progress $\rightarrow$ done).
+   * Fokus pada eksekusi tugas harian.
