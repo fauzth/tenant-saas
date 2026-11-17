@@ -94,8 +94,7 @@ Untuk menjamin keamanan data antar perusahaan (*tenant*) dan integritas tindakan
 ### **A. JSON Web Token (JWT) Authentication**
 * **Mekanisme:** Setelah pengguna berhasil melakukan *login* melalui `/api/v1/auth/login`, server Express.js menerbitkan token JWT yang berisi klaim (*claims*) penting seperti `user_id`, `email`, `role`, dan `tenant_id`.
 * **Penggunaan:** Setiap kali frontend Next.js mengirimkan *request* ke *protected endpoints*, token tersebut wajib disertakan di dalam header HTTP menggunakan skema *Bearer*:
-  ```http
-  Authorization: Bearer <jwt_token>
+  `Authorization: Bearer <jwt_token>`
 * **Validasi Sesi:** Auth Middleware pada backend akan mendekode dan memverifikasi tanda tangan serta masa berlaku token sebelum request diteruskan ke controller logika bisnis.
 
 ### **B. Role-Based Access Control (RBAC)**
