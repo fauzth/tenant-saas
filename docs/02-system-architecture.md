@@ -21,15 +21,18 @@ Basis data **TenantFlow** dirancang menggunakan pendekatan relasional terpusat d
 
 <img src="./assets/figure_2_ERD.png" alt="TenantFlow Entity-Relationship Diagram" width="750px" />
 
-1. **`tenants` (Tabel Organisasi / Workspace):**
+1. **`tenants`:**
    * Berfungsi sebagai entitas induk (*parent*) bagi seluruh data operasional perusahaan yang terdaftar di dalam sistem.
    * **Kolom Utama:** `id` (PK), `name`, `slug`, dan `created_at`.
-2. **`users` (Tabel Manajemen Pengguna):**
+2. **`users`:**
    * Menyimpan informasi akun pengguna yang tergabung dalam suatu *tenant* tertentu, dilengkapi dengan kolom `role` untuk membedakan hak akses (*Owner*, *Project Manager*, *Member*).
    * **Kolom Utama:** `id` (PK), `tenant_id` (FK ke `tenants.id`), `name`, `email`, `password_hash`, `role`, dan `created_at`.
-3. **`projects` (Tabel Manajemen Proyek):**
+3. **`projects`:**
    * Dikelola oleh *Project Manager* di dalam suatu *tenant* untuk mengelompokkan pekerjaan dan tugas-tugas tim.
    * **Kolom Utama:** `id` (PK), `tenant_id` (FK ke `tenants.id`), `name`, `description`, `status` (*planning*, *in_progress*, *completed*), dan `created_at`.
-4. **`tasks` (Tabel Tugas / Pekerjaan):**
+4. **`tasks`:**
    * Memuat rincian tugas spesifik di dalam suatu proyek yang dapat ditugaskan (*assigned*) kepada anggota tim (*member*).
    * **Kolom Utama:** `id` (PK), `project_id` (FK ke `projects.id`), `tenant_id` (FK ke `tenants.id`), `assigned_to` (FK ke `users.id`), `title`, `status` (*todo*, *in_progress*, *done*), dan `created_at`.
+
+#### **Strategi Keamanan Multi-Tenancy (`tenant_id`):**
+Hampir seluruh tabel operasional (`users`, `projects`, dan `tasks`) wajib menyertakan kolom `tenant_id`. Hal ini memastikan bahwa setiap *query* yang dieksekusi oleh backend selalu difilter berdasarkan ID perusahaan yang sedang aktif, sehingga kebocoran data antar-tenant dapat dicegah.
