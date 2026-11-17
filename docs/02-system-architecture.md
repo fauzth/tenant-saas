@@ -81,3 +81,36 @@ Mengelola rincian tugas operasional di dalam suatu proyek.
 | `POST` | `/api/v1/projects/:projectId/tasks` | Membuat tugas baru dan menetapkannya ke anggota tim (*assigned_to*). | Owner / PM |
 | `PUT` | `/api/v1/tasks/:id` | Memperbarui status tugas (*todo* $\rightarrow$ *in_progress* $\rightarrow$ *done*). | Owner / PM / Member |
 | `DELETE` | `/api/v1/tasks/:id` | Menghapus tugas dari proyek. | Owner / PM |
+
+
+---
+
+## 4. Security & Access Control Strategy
+
+Untuk menjamin keamanan data antar perusahaan (*tenant*) dan integritas tindakan pengguna, **TenantFlow** menerapkan lapisan keamanan ganda di level autentikasi dan otorisasi.
+
+<img src="./assets/figure_3_Auth.png" alt="JWT Authentication & Middleware Authorization Flow" width="750px" />
+
+### **A. JSON Web Token (JWT) Authentication**
+* **Mekanisme:** Setelah pengguna berhasil melakukan *login* melalui `/api/v1/auth/login`, server Express.js menerbitkan token JWT yang berisi klaim (*claims*) penting seperti `user_id`, `email`, `role`, dan `tenant_id`.
+* **Penggunaan:** Setiap kali frontend Next.js mengirimkan *request* ke *protected endpoints*, token tersebut wajib disertakan di dalam header HTTP menggunakan skema *Bearer*:
+  ```http
+  Authorization: Bearer <jwt_token>
+* **Validasi Sesi:** Auth Middleware pada backend akan mendekode dan memverifikasi tanda tangan serta masa berlaku token sebelum request diteruskan ke controller logika bisnis.
+
+### **B. Role-Based Access Control (RBAC)**
+Hak akses pengguna di dalam sistem dibagi menjadi tiga hierarki peran utama untuk memastikan pemisahan tugas yang jelas:
+
+<img src="./assets/figure_4_UseCase.png" alt="TenantFlow Use Case" width="750px" />
+
+1 **Tenant Owner:** 
+  * Memiliki hak akses penuh (full privileges) terhadap workspace perusahaan.
+  * Dapat mendaftarkan tenant, mem-provisioning akun Project Manager atau Member, serta menghapus proyek.
+2. **Project Manager (PM):** 
+   * Bertanggung jawab mengelola operasional proyek, perencanaan (*planning*), dan pemantauan *timeline*.
+   * Dapat membuat proyek baru dan memperbarui status proyek.
+   * Dapat membuat, menetapkan (*assign*), dan mengubah status *task* di dalam proyek.
+   * Dapat mengambil bagian dalam eksekusi proyek dengan cara menetapkan task kepada dirinya sendiri atau mengerjakan task yang ada.
+3 **Member:**
+  * Dapat melihat daftar proyek dalam tenant, melihat rincian tugas yang ditugaskan kepadanya, serta memperbarui status tugas (todo $\rightarrow$ in_progress $\rightarrow$ done).
+  * Fokus pada eksekusi tugas harian.
