@@ -111,5 +111,6 @@ Hak akses pengguna di dalam sistem dibagi menjadi tiga hierarki peran utama untu
    * Dapat membuat, menetapkan (*assign*), dan mengubah status *task* di dalam proyek.
    * Dapat mengambil bagian dalam eksekusi proyek dengan cara menetapkan task kepada dirinya sendiri atau mengerjakan task yang ada.
 3. **Member:**
-   * Dapat melihat daftar proyek dalam tenant, melihat rincian tugas yang ditugaskan kepadanya, serta memperbarui status tugas (todo $\rightarrow$ in_progress $\rightarrow$ done).
-   * Fokus pada eksekusi tugas harian.
+   * Dapat melihat daftar proyek di dalam tenant dan melihat rincian tugas yang ditugaskan kepadanya.
+   * Bertanggung jawab mengeksekusi tugas harian dan memperbarui status progres tugas.
+   * Dapat mengubah status tugas dari `to_do` $\rightarrow$ `in_progress`, lalu mengajukan peninjauan (`in_review` / *pending* approval oleh PM) sebelum tugas tersebut dinyatakan `done` oleh PM.
