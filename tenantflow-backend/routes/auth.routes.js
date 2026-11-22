@@ -10,7 +10,10 @@ const router = express.Router();
 // Endpoint: POST /api/v1/auth/register
 router.post("/register", registerTenant);
 
+// Endpoint: POST /api/v1/auth/login
 router.post("/login", login);
+
+// Endpoint: GET /api/v1/auth/profile
 router.get("/profile", authenticate, profile);
 
 export default router;
