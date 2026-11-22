@@ -8,6 +8,8 @@ model Tenant {
   updatedAt DateTime @onCreate(now()) @onUpdate(now())
 
   users User[]
+  projects Project[]
+  tasks Task[]
 }
 
 model User {
@@ -20,5 +22,35 @@ model User {
   role          String   
   createdAt     DateTime @default(now())
   updatedAt DateTime @onCreate(now()) @onUpdate(now())
+  assignedTasks Task[] @relation("TaskAssignee")
+  approvedTasks Task[] @relation("TaskApprover")
 }
- 
+
+model Project {
+  id      Int      @id @default(autoincrement())
+  name      String
+  tenant_id Int
+  tenant    Tenant   @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  description String?
+  status      String  @default("planning")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @onCreate(now()) @onUpdate(now())
+  tasks     Task[]
+}
+
+model Task {
+  id          Int      @id @default(autoincrement())
+  project_id  Int
+  project     Project  @relation(fields: [project_id], references: [id], onDelete: Cascade)
+  tenant_id   Int
+  tenant      Tenant   @relation(fields: [tenant_id], references: [id], onDelete: Cascade)
+  assigned_to Int?
+  assignedUser User?   @relation("TaskAssignee", fields: [assigned_to], references: [id], onDelete: SetNull)
+  approved_by  Int?
+  approvedUser User?   @relation("TaskApprover",fields: [approved_by], references: [id], onDelete: SetNull)
+  apprroved_at   DateTime?
+  title       String
+  status      String   @default("todo")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @onCreate(now()) @onUpdate(now())
+}
